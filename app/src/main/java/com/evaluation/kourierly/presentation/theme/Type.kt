@@ -1,4 +1,4 @@
-package com.evaluation.kourierly.ui.theme
+package com.evaluation.kourierly.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

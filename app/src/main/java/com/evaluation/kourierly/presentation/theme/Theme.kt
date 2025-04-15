@@ -1,4 +1,4 @@
-package com.evaluation.kourierly.ui.theme
+package com.evaluation.kourierly.presentation.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

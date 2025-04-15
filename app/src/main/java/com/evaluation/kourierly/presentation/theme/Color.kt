@@ -1,4 +1,4 @@
-package com.evaluation.kourierly.ui.theme
+package com.evaluation.kourierly.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
