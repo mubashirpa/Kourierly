@@ -1,4 +1,4 @@
-package com.evaluation.kourierly
+package com.evaluation.kourierly.presentation.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
