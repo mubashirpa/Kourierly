@@ -1,6 +1,6 @@
 package com.evaluation.kourierly.presentation.customerUpdate
 
-import android.util.Log
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -21,13 +21,27 @@ class CustomerUpdateViewModel(
 
     private val args = savedStateHandle.toRoute<Screen.CustomerUpdate>()
 
+    init {
+        customerRolesList()
+    }
+
     fun onEvent(event: CustomerUpdateUiEvent) {
         when (event) {
+            is CustomerUpdateUiEvent.OnGenderDropdownExpandedChange -> {
+                uiState = uiState.copy(expandedGenderDropdown = event.expanded)
+            }
+
+            is CustomerUpdateUiEvent.OnRolesDropdownExpandedChange -> {
+                uiState = uiState.copy(expandedRolesDropdown = event.expanded)
+            }
+
             is CustomerUpdateUiEvent.UpdateCustomer -> {
+                val roleId =
+                    uiState.roles.firstOrNull { it.customerRole == uiState.roleState.text }?.roleId
                 updateCustomer(
-                    name = event.name,
+                    name = event.name.trim(),
                     phoneNumber = args.phoneNumber,
-                    roleId = args.roleId,
+                    roleId = roleId?.toString(),
                     gender = event.gender,
                     customerId = args.customerId,
                 )
@@ -39,10 +53,37 @@ class CustomerUpdateViewModel(
         }
     }
 
+    private fun customerRolesList() {
+        viewModelScope.launch {
+            try {
+                uiState = uiState.copy(loading = true)
+                val result = kourierlyRepository.customerRoleList()
+                val success = result.success == true
+                val roles = result.data.orEmpty()
+                val role = roles.firstOrNull()?.customerRole?.toString()
+                uiState =
+                    uiState.copy(
+                        loading = false,
+                        roleState = TextFieldState(role.orEmpty()),
+                        roles = roles,
+                        success = success,
+                        userMessage = if (success) null else result.message,
+                    )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                uiState =
+                    uiState.copy(
+                        loading = false,
+                        userMessage = e.message,
+                    )
+            }
+        }
+    }
+
     private fun updateCustomer(
         name: String,
         phoneNumber: String,
-        roleId: String,
+        roleId: String?,
         gender: String,
         customerId: String,
     ) {
@@ -56,9 +97,14 @@ class CustomerUpdateViewModel(
             return
         }
 
+        if (roleId == null) {
+            uiState = uiState.copy(userMessage = "Role cannot be empty")
+            return
+        }
+
         viewModelScope.launch {
             try {
-                uiState = uiState.copy(loading = true)
+                uiState = uiState.copy(openProgressDialog = true)
                 val result =
                     kourierlyRepository.mobileUpdate(
                         customerId = customerId,
@@ -67,19 +113,18 @@ class CustomerUpdateViewModel(
                         phoneNumber = phoneNumber,
                         roleId = roleId,
                     )
-                Log.d("hello", "updateCustomer: $result")
                 val success = result.success == true
                 uiState =
                     uiState.copy(
                         customerUpdateSuccess = success,
-                        loading = false,
+                        openProgressDialog = false,
                         userMessage = if (success) null else result.message,
                     )
             } catch (e: Exception) {
                 e.printStackTrace()
                 uiState =
                     uiState.copy(
-                        loading = false,
+                        openProgressDialog = false,
                         userMessage = e.message,
                     )
             }
