@@ -2,6 +2,7 @@ package com.evaluation.kourierly.di
 
 import com.evaluation.kourierly.data.repository.KourierlyRepositoryImpl
 import com.evaluation.kourierly.domain.repository.KourierlyRepository
+import com.evaluation.kourierly.presentation.customerUpdate.CustomerUpdateViewModel
 import com.evaluation.kourierly.presentation.cutomerRole.CustomerRoleViewModel
 import com.evaluation.kourierly.presentation.sendOtp.SendOtpViewModel
 import com.evaluation.kourierly.presentation.verifyOtp.VerifyOtpViewModel
@@ -20,6 +21,7 @@ val appModule =
         viewModelOf(::SendOtpViewModel)
         viewModelOf(::VerifyOtpViewModel)
         viewModelOf(::CustomerRoleViewModel)
+        viewModelOf(::CustomerUpdateViewModel)
         single {
             HttpClient {
                 expectSuccess = true
