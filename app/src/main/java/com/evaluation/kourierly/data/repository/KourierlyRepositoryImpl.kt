@@ -19,13 +19,14 @@ import io.ktor.http.contentType
 class KourierlyRepositoryImpl(
     private val httpClient: HttpClient,
 ) : KourierlyRepository {
-    override suspend fun customerSendOtp(sendOtpRequest: CustomerSendOtpRequestDto): CustomerSendOtpDto =
+    override suspend fun customerSendOtp(phoneNumber: String): CustomerSendOtpDto =
         httpClient
             .post(Constants.KOURIERLY_SERVICE_BASE_URL) {
                 url {
                     appendPathSegments("customerSendOTP", "mobileCondition")
                 }
                 contentType(ContentType.Application.Json)
+                val sendOtpRequest = CustomerSendOtpRequestDto(phoneNumber = phoneNumber)
                 setBody(sendOtpRequest)
             }.body()
 
