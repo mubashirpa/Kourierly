@@ -7,12 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.evaluation.kourierly.presentation.customerUpdate.CustomerUpdateScreen
-import com.evaluation.kourierly.presentation.cutomerRole.CustomerRoleScreen
-import com.evaluation.kourierly.presentation.cutomerRole.CustomerRoleViewModel
 import com.evaluation.kourierly.presentation.home.HomeScreen
 import com.evaluation.kourierly.presentation.sendOtp.SendOtpScreen
 import com.evaluation.kourierly.presentation.verifyOtp.VerifyOtpScreen
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun KourierlyNavHost(
@@ -37,7 +34,7 @@ fun KourierlyNavHost(
             VerifyOtpScreen(
                 phoneNumber = args.phoneNumber,
                 onVerifyOtpSuccess = { customerId ->
-                    navController.navigate(Screen.CustomerRole(args.phoneNumber, customerId)) {
+                    navController.navigate(Screen.CustomerUpdate(args.phoneNumber, customerId)) {
                         popUpTo<Screen.SendOtp> {
                             inclusive = true
                         }
@@ -45,33 +42,18 @@ fun KourierlyNavHost(
                 },
             )
         }
-        composable<Screen.CustomerRole> { backStackEntry ->
-            val args = backStackEntry.toRoute<Screen.CustomerRole>()
-            val viewModel: CustomerRoleViewModel = koinViewModel()
-
-            CustomerRoleScreen(
-                uiState = viewModel.uiState,
-                onEvent = viewModel::onEvent,
-                onNavigateToCustomerUpdate = { roleId ->
-                    navController.navigate(
-                        Screen.CustomerUpdate(
-                            args.phoneNumber,
-                            args.customerId,
-                            roleId,
-                        ),
-                    )
-                },
-            )
-        }
-        composable<Screen.CustomerUpdate> {
+        composable<Screen.CustomerUpdate> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.CustomerUpdate>()
             CustomerUpdateScreen(
+                phoneNumber = args.phoneNumber,
                 onUpdateSuccess = { customerName ->
                     navController.navigate(Screen.Home(customerName)) {
-                        popUpTo<Screen.CustomerRole> {
+                        popUpTo<Screen.CustomerUpdate> {
                             inclusive = true
                         }
                     }
                 },
+                onNavigateUp = navController::navigateUp,
             )
         }
         composable<Screen.Home> { backStackEntry ->
