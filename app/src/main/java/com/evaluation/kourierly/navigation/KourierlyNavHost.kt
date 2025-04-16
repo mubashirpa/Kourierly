@@ -36,10 +36,11 @@ fun KourierlyNavHost(
                 onVerifyOtpSuccess = { customerId ->
                     navController.navigate(Screen.CustomerUpdate(args.phoneNumber, customerId)) {
                         popUpTo<Screen.SendOtp> {
-                            inclusive = true
+                            inclusive = false
                         }
                     }
                 },
+                onNavigateUp = navController::navigateUp,
             )
         }
         composable<Screen.CustomerUpdate> { backStackEntry ->
@@ -48,7 +49,7 @@ fun KourierlyNavHost(
                 phoneNumber = args.phoneNumber,
                 onUpdateSuccess = { customerName ->
                     navController.navigate(Screen.Home(customerName)) {
-                        popUpTo<Screen.CustomerUpdate> {
+                        popUpTo<Screen.SendOtp> {
                             inclusive = true
                         }
                     }
