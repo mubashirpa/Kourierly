@@ -30,13 +30,21 @@ class KourierlyRepositoryImpl(
                 setBody(sendOtpRequest)
             }.body()
 
-    override suspend fun verifyOtp(verifyOtpRequest: VerifyOtpRequestDto): CustomerRoleListDto =
+    override suspend fun verifyOtp(
+        phoneNumber: String,
+        otp: String,
+    ): CustomerRoleListDto =
         httpClient
             .post(Constants.KOURIERLY_SERVICE_BASE_URL) {
                 url {
                     appendPathSegments("verifyOTP", "mobileCondition")
                 }
                 contentType(ContentType.Application.Json)
+                val verifyOtpRequest =
+                    VerifyOtpRequestDto(
+                        phoneNumber = phoneNumber,
+                        otp = otp,
+                    )
                 setBody(verifyOtpRequest)
             }.body()
 
