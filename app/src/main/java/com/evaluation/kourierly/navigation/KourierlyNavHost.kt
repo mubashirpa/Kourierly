@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.evaluation.kourierly.presentation.customerUpdate.CustomerUpdateScreen
 import com.evaluation.kourierly.presentation.cutomerRole.CustomerRoleScreen
 import com.evaluation.kourierly.presentation.cutomerRole.CustomerRoleViewModel
 import com.evaluation.kourierly.presentation.sendOtp.SendOtpScreen
@@ -16,7 +17,7 @@ import org.koin.androidx.compose.koinViewModel
 fun KourierlyNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: Screen = Screen.CustomerRole,
+    startDestination: Screen = Screen.SendOtp,
 ) {
     NavHost(
         navController = navController,
@@ -34,8 +35,8 @@ fun KourierlyNavHost(
             val args = backStackEntry.toRoute<Screen.VerifyOtp>()
             VerifyOtpScreen(
                 phoneNumber = args.phoneNumber,
-                onVerifyOtpSuccess = {
-                    navController.navigate(Screen.CustomerRole) {
+                onVerifyOtpSuccess = { customerId ->
+                    navController.navigate(Screen.CustomerRole(args.phoneNumber, customerId)) {
                         popUpTo<Screen.SendOtp> {
                             inclusive = true
                         }
@@ -43,12 +44,26 @@ fun KourierlyNavHost(
                 },
             )
         }
-        composable<Screen.CustomerRole> {
+        composable<Screen.CustomerRole> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.CustomerRole>()
             val viewModel: CustomerRoleViewModel = koinViewModel()
+
             CustomerRoleScreen(
                 uiState = viewModel.uiState,
                 onEvent = viewModel::onEvent,
+                onNavigateToCustomerUpdate = { roleId ->
+                    navController.navigate(
+                        Screen.CustomerUpdate(
+                            args.phoneNumber,
+                            args.customerId,
+                            roleId,
+                        ),
+                    )
+                },
             )
+        }
+        composable<Screen.CustomerUpdate> {
+            CustomerUpdateScreen()
         }
     }
 }
