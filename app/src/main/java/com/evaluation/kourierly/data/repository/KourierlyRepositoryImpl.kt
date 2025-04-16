@@ -6,6 +6,7 @@ import com.evaluation.kourierly.data.remote.dto.mobileUpdate.MobileUpdateRequest
 import com.evaluation.kourierly.data.remote.dto.roleList.CustomerRoleListDto
 import com.evaluation.kourierly.data.remote.dto.sendOtp.CustomerSendOtpDto
 import com.evaluation.kourierly.data.remote.dto.sendOtp.CustomerSendOtpRequestDto
+import com.evaluation.kourierly.data.remote.dto.verifyOtp.VerifyOtpDto
 import com.evaluation.kourierly.data.remote.dto.verifyOtp.VerifyOtpRequestDto
 import com.evaluation.kourierly.domain.repository.KourierlyRepository
 import io.ktor.client.HttpClient
@@ -33,7 +34,7 @@ class KourierlyRepositoryImpl(
     override suspend fun verifyOtp(
         phoneNumber: String,
         otp: String,
-    ): CustomerRoleListDto =
+    ): VerifyOtpDto =
         httpClient
             .post(Constants.KOURIERLY_SERVICE_BASE_URL) {
                 url {
