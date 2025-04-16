@@ -8,6 +8,8 @@
     <string name="gender">Gender</string>
     <string name="hi">Hi %1$s</string>
     <string name="kourierly_will_send_you_a_sms_with_a_verification_code_message_and_data_rates_may_apply">Kourierly will send you a SMS with a verification code. Message and data rates may apply.</string>
+    <string name="logout">Logout</string>
+    <string name="more_options">More options</string>
     <string name="name">Name</string>
     <string name="next">Next</string>
     <string name="phone_number">Phone Number</string>
