@@ -50,6 +50,11 @@ class VerifyOtpViewModel(
                 val success = result.success == true
                 uiState =
                     uiState.copy(
+                        customerId =
+                            result.data
+                                ?.firstOrNull()
+                                ?.customerId
+                                ?.toString(),
                         loading = false,
                         userMessage = if (success) null else result.message,
                         verifyOtpSuccess = success,

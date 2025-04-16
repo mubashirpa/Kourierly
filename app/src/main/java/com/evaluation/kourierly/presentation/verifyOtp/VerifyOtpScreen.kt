@@ -44,7 +44,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun VerifyOtpScreen(
     phoneNumber: String,
-    onVerifyOtpSuccess: () -> Unit,
+    onVerifyOtpSuccess: (customerId: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: VerifyOtpViewModel = koinViewModel(),
 ) {
@@ -56,7 +56,7 @@ fun VerifyOtpScreen(
             .filter { it.verifyOtpSuccess }
             .flowWithLifecycle(lifecycle)
             .collect {
-                currentOnVerifyOtpSuccess()
+                viewModel.uiState.customerId?.let(currentOnVerifyOtpSuccess)
             }
     }
 
