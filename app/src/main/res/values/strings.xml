@@ -10,4 +10,8 @@
     <string name="enter_the_6_digit_code_sent_to_you_at">Enter the 6-digit code sent to you at %1$s</string>
     <string name="_continue">Continue</string>
     <string name="role">Role</string>
+    <string name="complete_profile">Complete profile</string>
+    <string name="name">Name</string>
+    <string name="gender">Gender</string>
+    <string name="submit">Submit</string>
 </resources>
