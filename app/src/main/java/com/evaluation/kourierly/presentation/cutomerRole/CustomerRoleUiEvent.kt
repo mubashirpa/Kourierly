@@ -5,5 +5,7 @@ sealed class CustomerRoleUiEvent {
         val roleId: Int?,
     ) : CustomerRoleUiEvent()
 
-    object UserMessageShown : CustomerRoleUiEvent()
+    data object OnContinueClicked : CustomerRoleUiEvent()
+
+    data object UserMessageShown : CustomerRoleUiEvent()
 }

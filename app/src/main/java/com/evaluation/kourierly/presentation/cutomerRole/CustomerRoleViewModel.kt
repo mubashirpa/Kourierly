@@ -20,6 +20,12 @@ class CustomerRoleViewModel(
 
     fun onEvent(event: CustomerRoleUiEvent) {
         when (event) {
+            CustomerRoleUiEvent.OnContinueClicked -> {
+                if (uiState.selectedRoleId == null) {
+                    uiState = uiState.copy(userMessage = "Please select a role")
+                }
+            }
+
             is CustomerRoleUiEvent.OnRoleSelected -> {
                 uiState = uiState.copy(selectedRoleId = event.roleId)
             }

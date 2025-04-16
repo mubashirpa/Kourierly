@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -81,6 +80,7 @@ fun CustomerRoleScreen(
             Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
                 Button(
                     onClick = {
+                        onEvent(CustomerRoleUiEvent.OnContinueClicked)
                         uiState.selectedRoleId?.toString()?.let(onNavigateToCustomerUpdate)
                     },
                     modifier =
@@ -110,7 +110,6 @@ fun CustomerRoleScreen(
                 }
 
                 uiState.success -> {
-                    val options = uiState.roles
                     Column(
                         modifier =
                             Modifier
@@ -118,8 +117,6 @@ fun CustomerRoleScreen(
                                 .padding(horizontal = 16.dp, vertical = 12.dp),
                     ) {
                         var expanded by remember { mutableStateOf(false) }
-                        val textFieldState =
-                            rememberTextFieldState(options[0].customerRole.toString())
 
                         ExposedDropdownMenuBox(
                             expanded = expanded,
@@ -130,7 +127,7 @@ fun CustomerRoleScreen(
                                     Modifier
                                         .fillMaxWidth()
                                         .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
-                                state = textFieldState,
+                                state = uiState.selectedRole,
                                 readOnly = true,
                                 lineLimits = TextFieldLineLimits.SingleLine,
                                 label = {
@@ -139,7 +136,6 @@ fun CustomerRoleScreen(
                                 trailingIcon = {
                                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                                 },
-                                colors = ExposedDropdownMenuDefaults.textFieldColors(),
                             )
                             ExposedDropdownMenu(
                                 expanded = expanded,
@@ -164,7 +160,7 @@ fun CustomerRoleScreen(
                                         },
                                         onClick = {
                                             onEvent(CustomerRoleUiEvent.OnRoleSelected(role.roleId))
-                                            textFieldState.setTextAndPlaceCursorAtEnd(role.customerRole.toString())
+                                            uiState.selectedRole.setTextAndPlaceCursorAtEnd(role.customerRole.toString())
                                             expanded = false
                                         },
                                         contentPadding =
