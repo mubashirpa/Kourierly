@@ -1,7 +1,6 @@
 package com.evaluation.kourierly.domain.repository
 
 import com.evaluation.kourierly.data.remote.dto.mobileUpdate.MobileUpdateDto
-import com.evaluation.kourierly.data.remote.dto.mobileUpdate.MobileUpdateRequestDto
 import com.evaluation.kourierly.data.remote.dto.roleList.CustomerRoleListDto
 import com.evaluation.kourierly.data.remote.dto.sendOtp.CustomerSendOtpDto
 import com.evaluation.kourierly.data.remote.dto.verifyOtp.VerifyOtpDto
@@ -16,5 +15,11 @@ interface KourierlyRepository {
 
     suspend fun customerRoleList(): CustomerRoleListDto
 
-    suspend fun mobileUpdate(mobileUpdateRequest: MobileUpdateRequestDto): MobileUpdateDto
+    suspend fun mobileUpdate(
+        customerId: String,
+        customerName: String,
+        gender: String,
+        phoneNumber: String,
+        roleId: String,
+    ): MobileUpdateDto
 }

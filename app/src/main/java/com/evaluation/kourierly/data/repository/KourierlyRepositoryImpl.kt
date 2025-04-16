@@ -16,6 +16,7 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
+import kotlinx.serialization.json.Json
 
 class KourierlyRepositoryImpl(
     private val httpClient: HttpClient,
@@ -57,13 +58,27 @@ class KourierlyRepositoryImpl(
                 }
             }.body()
 
-    override suspend fun mobileUpdate(mobileUpdateRequest: MobileUpdateRequestDto): MobileUpdateDto =
+    override suspend fun mobileUpdate(
+        customerId: String,
+        customerName: String,
+        gender: String,
+        phoneNumber: String,
+        roleId: String,
+    ): MobileUpdateDto =
         httpClient
             .post(Constants.KOURIERLY_SERVICE_BASE_URL) {
                 url {
                     appendPathSegments("customerUpdate", "mobileUpdate")
                 }
                 contentType(ContentType.Application.Json)
+                val mobileUpdateRequest =
+                    MobileUpdateRequestDto(
+                        customerId = customerId,
+                        customerName = customerName,
+                        gender = gender,
+                        phoneNumber = phoneNumber,
+                        roleId = roleId,
+                    )
                 setBody(mobileUpdateRequest)
             }.body()
 }
