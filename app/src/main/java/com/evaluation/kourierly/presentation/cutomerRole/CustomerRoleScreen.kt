@@ -48,6 +48,7 @@ import com.evaluation.kourierly.presentation.theme.KourierlyTheme
 fun CustomerRoleScreen(
     uiState: CustomerRoleUiState,
     onEvent: (CustomerRoleUiEvent) -> Unit,
+    onNavigateToCustomerUpdate: (roleId: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -79,7 +80,9 @@ fun CustomerRoleScreen(
         bottomBar = {
             Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        uiState.selectedRoleId?.toString()?.let(onNavigateToCustomerUpdate)
+                    },
                     modifier =
                         Modifier
                             .fillMaxWidth()
@@ -160,6 +163,7 @@ fun CustomerRoleScreen(
                                             }
                                         },
                                         onClick = {
+                                            onEvent(CustomerRoleUiEvent.OnRoleSelected(role.roleId))
                                             textFieldState.setTextAndPlaceCursorAtEnd(role.customerRole.toString())
                                             expanded = false
                                         },
@@ -186,6 +190,7 @@ private fun CustomerRoleScreenPreview() {
         CustomerRoleScreen(
             uiState = CustomerRoleUiState(),
             onEvent = {},
+            onNavigateToCustomerUpdate = {},
             modifier = Modifier.fillMaxSize(),
         )
     }

@@ -20,6 +20,10 @@ class CustomerRoleViewModel(
 
     fun onEvent(event: CustomerRoleUiEvent) {
         when (event) {
+            is CustomerRoleUiEvent.OnRoleSelected -> {
+                uiState = uiState.copy(selectedRoleId = event.roleId)
+            }
+
             CustomerRoleUiEvent.UserMessageShown -> {
                 uiState = uiState.copy(userMessage = null)
             }
