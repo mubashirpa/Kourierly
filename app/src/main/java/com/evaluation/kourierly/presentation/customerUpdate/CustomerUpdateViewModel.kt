@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.evaluation.kourierly.domain.repository.CustomerDetailsRepository
 import com.evaluation.kourierly.domain.repository.KourierlyRepository
 import com.evaluation.kourierly.navigation.Screen
 import kotlinx.coroutines.launch
@@ -15,6 +16,7 @@ import kotlinx.coroutines.launch
 class CustomerUpdateViewModel(
     savedStateHandle: SavedStateHandle,
     private val kourierlyRepository: KourierlyRepository,
+    private val customerDetailsRepository: CustomerDetailsRepository,
 ) : ViewModel() {
     var uiState by mutableStateOf(CustomerUpdateUiState())
         private set
@@ -114,6 +116,18 @@ class CustomerUpdateViewModel(
                         roleId = roleId,
                     )
                 val success = result.success == true
+
+                result.data?.firstOrNull()?.let { customer ->
+                    customerDetailsRepository.updateCustomerDetails(
+                        customerId = customer.customerId?.toString().orEmpty(),
+                        customerName = customer.customerName.orEmpty(),
+                        gender = customer.gender.orEmpty(),
+                        phoneNumber = customer.phoneNumber.orEmpty(),
+                        roleId = customer.roleId?.toString().orEmpty(),
+                        roleName = uiState.roleState.text.toString(),
+                    )
+                }
+
                 uiState =
                     uiState.copy(
                         customerUpdateSuccess = success,
