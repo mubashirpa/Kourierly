@@ -34,7 +34,7 @@ fun HomeScreen(
             LargeTopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.welcome, name),
+                        text = stringResource(R.string.hi, name),
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
