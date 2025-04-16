@@ -16,7 +16,6 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
-import kotlinx.serialization.json.Json
 
 class KourierlyRepositoryImpl(
     private val httpClient: HttpClient,
