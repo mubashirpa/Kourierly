@@ -59,7 +59,17 @@ fun KourierlyNavHost(
         }
         composable<Screen.Home> { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.Home>()
-            HomeScreen(name = args.name)
+
+            HomeScreen(
+                name = args.name,
+                onLogoutSuccess = {
+                    navController.navigate(Screen.SendOtp) {
+                        popUpTo<Screen.Home> {
+                            inclusive = true
+                        }
+                    }
+                },
+            )
         }
     }
 }
