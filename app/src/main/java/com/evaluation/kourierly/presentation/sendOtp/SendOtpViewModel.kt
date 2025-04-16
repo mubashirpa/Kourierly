@@ -40,14 +40,20 @@ class SendOtpViewModel(
             try {
                 uiState = uiState.copy(loading = true)
                 val result = kourierlyRepository.customerSendOtp(phoneNumber)
+                val success = result.success == true
                 uiState =
                     uiState.copy(
                         loading = false,
-                        sendOtpSuccess = result.success == true,
+                        sendOtpSuccess = success,
+                        userMessage = if (success) null else result.message,
                     )
             } catch (e: Exception) {
                 e.printStackTrace()
-                uiState = uiState.copy(userMessage = e.message)
+                uiState =
+                    uiState.copy(
+                        loading = false,
+                        userMessage = e.message,
+                    )
             }
         }
     }
