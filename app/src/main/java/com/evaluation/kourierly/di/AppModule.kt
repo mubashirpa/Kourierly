@@ -3,6 +3,7 @@ package com.evaluation.kourierly.di
 import com.evaluation.kourierly.data.repository.KourierlyRepositoryImpl
 import com.evaluation.kourierly.domain.repository.KourierlyRepository
 import com.evaluation.kourierly.presentation.sendOtp.SendOtpViewModel
+import com.evaluation.kourierly.presentation.verifyOtp.VerifyOtpViewModel
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
@@ -16,6 +17,7 @@ val appModule =
     module {
         singleOf(::KourierlyRepositoryImpl) { bind<KourierlyRepository>() }
         viewModelOf(::SendOtpViewModel)
+        viewModelOf(::VerifyOtpViewModel)
         single {
             HttpClient {
                 expectSuccess = true
