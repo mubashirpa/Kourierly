@@ -7,6 +7,7 @@ import com.evaluation.kourierly.domain.repository.CustomerDetailsRepository
 import com.evaluation.kourierly.domain.repository.KourierlyRepository
 import com.evaluation.kourierly.presentation.customerUpdate.CustomerUpdateViewModel
 import com.evaluation.kourierly.presentation.home.HomeViewModel
+import com.evaluation.kourierly.presentation.main.MainViewModel
 import com.evaluation.kourierly.presentation.sendOtp.SendOtpViewModel
 import com.evaluation.kourierly.presentation.verifyOtp.VerifyOtpViewModel
 import io.ktor.client.HttpClient
@@ -27,6 +28,7 @@ val appModule =
         viewModelOf(::VerifyOtpViewModel)
         viewModelOf(::CustomerUpdateViewModel)
         viewModelOf(::HomeViewModel)
+        viewModelOf(::MainViewModel)
         single {
             HttpClient {
                 expectSuccess = true
