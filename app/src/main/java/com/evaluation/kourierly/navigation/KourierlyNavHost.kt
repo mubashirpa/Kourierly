@@ -7,14 +7,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.evaluation.kourierly.presentation.cutomerRole.CustomerRoleScreen
+import com.evaluation.kourierly.presentation.cutomerRole.CustomerRoleViewModel
 import com.evaluation.kourierly.presentation.sendOtp.SendOtpScreen
 import com.evaluation.kourierly.presentation.verifyOtp.VerifyOtpScreen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun KourierlyNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: Screen = Screen.SendOtp,
+    startDestination: Screen = Screen.CustomerRole,
 ) {
     NavHost(
         navController = navController,
@@ -42,7 +44,11 @@ fun KourierlyNavHost(
             )
         }
         composable<Screen.CustomerRole> {
-            CustomerRoleScreen()
+            val viewModel: CustomerRoleViewModel = koinViewModel()
+            CustomerRoleScreen(
+                uiState = viewModel.uiState,
+                onEvent = viewModel::onEvent,
+            )
         }
     }
 }
