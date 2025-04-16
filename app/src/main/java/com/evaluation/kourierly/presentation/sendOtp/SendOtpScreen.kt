@@ -1,9 +1,11 @@
 package com.evaluation.kourierly.presentation.sendOtp
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,12 +16,14 @@ import androidx.compose.foundation.text.input.maxLength
 import androidx.compose.foundation.text.input.then
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,12 +33,13 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
@@ -79,6 +84,7 @@ private fun SendOtpScreenContent(
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val snackbarHostState = remember { SnackbarHostState() }
+    val focusManager = LocalFocusManager.current
 
     uiState.userMessage?.let { userMessage ->
         LaunchedEffect(userMessage) {
@@ -91,11 +97,10 @@ private fun SendOtpScreenContent(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            LargeTopAppBar(
+            TopAppBar(
                 title = {
                     Text(
                         text = stringResource(R.string.what_s_your_phone_number),
-                        fontWeight = FontWeight.Bold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -104,17 +109,30 @@ private fun SendOtpScreenContent(
             )
         },
         bottomBar = {
-            Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
-                Button(
-                    onClick = {
-                        onEvent(SendOtpUiEvent.SendOtp(uiState.phoneNumber.text.toString()))
-                    },
+            Column {
+                HorizontalDivider()
+                Row(
                     modifier =
                         Modifier
-                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 24.dp)
                             .navigationBarsPadding(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    Text(text = stringResource(R.string.next))
+                    Button(
+                        onClick = {
+                            onEvent(SendOtpUiEvent.SendOtp(uiState.phoneNumber.text.toString()))
+                        },
+                        modifier =
+                            Modifier
+                                .heightIn(min = 56.dp)
+                                .weight(1f),
+                        shape = MaterialTheme.shapes.medium,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.next),
+                            style = MaterialTheme.typography.labelLarge.copy(fontSize = 16.sp),
+                        )
+                    }
                 }
             }
         },
@@ -146,6 +164,9 @@ private fun SendOtpScreenContent(
                         )
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    onKeyboardAction = {
+                        focusManager.clearFocus()
+                    },
                     inputTransformation =
                         InputTransformation.maxLength(10).then {
                             if (!this.asCharSequence().isDigitsOnly()) {
@@ -153,11 +174,10 @@ private fun SendOtpScreenContent(
                             }
                         },
                     outputTransformation = {
-                        if (length > 0) insert(0, "(")
-                        if (length > 4) insert(4, ") ")
-                        if (length > 9) insert(9, "-")
+                        if (length > 5) insert(5, " ")
                     },
                     lineLimits = TextFieldLineLimits.SingleLine,
+                    shape = MaterialTheme.shapes.medium,
                 )
             }
         },
