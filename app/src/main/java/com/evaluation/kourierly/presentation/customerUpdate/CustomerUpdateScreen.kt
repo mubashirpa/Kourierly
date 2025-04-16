@@ -115,7 +115,10 @@ private fun CustomerUpdateScreenContent(
                     onClick = {
                         onEvent(
                             CustomerUpdateUiEvent.UpdateCustomer(
-                                name = uiState.name.text.toString(),
+                                name =
+                                    uiState.name.text
+                                        .toString()
+                                        .trim(),
                                 gender = uiState.gender.text.toString(),
                             ),
                         )
