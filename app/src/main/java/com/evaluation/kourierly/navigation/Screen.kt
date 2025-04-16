@@ -12,5 +12,15 @@ sealed class Screen {
     ) : Screen()
 
     @Serializable
-    data object CustomerRole : Screen()
+    data class CustomerRole(
+        val phoneNumber: String,
+        val customerId: String,
+    ) : Screen()
+
+    @Serializable
+    data class CustomerUpdate(
+        val phoneNumber: String,
+        val customerId: String,
+        val roleId: String,
+    ) : Screen()
 }
