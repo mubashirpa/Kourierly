@@ -23,4 +23,9 @@ sealed class Screen {
         val customerId: String,
         val roleId: String,
     ) : Screen()
+
+    @Serializable
+    data class Home(
+        val name: String,
+    ) : Screen()
 }

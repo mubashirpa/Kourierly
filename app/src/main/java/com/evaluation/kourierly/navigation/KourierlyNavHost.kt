@@ -9,6 +9,7 @@ import androidx.navigation.toRoute
 import com.evaluation.kourierly.presentation.customerUpdate.CustomerUpdateScreen
 import com.evaluation.kourierly.presentation.cutomerRole.CustomerRoleScreen
 import com.evaluation.kourierly.presentation.cutomerRole.CustomerRoleViewModel
+import com.evaluation.kourierly.presentation.home.HomeScreen
 import com.evaluation.kourierly.presentation.sendOtp.SendOtpScreen
 import com.evaluation.kourierly.presentation.verifyOtp.VerifyOtpScreen
 import org.koin.androidx.compose.koinViewModel
@@ -63,7 +64,19 @@ fun KourierlyNavHost(
             )
         }
         composable<Screen.CustomerUpdate> {
-            CustomerUpdateScreen()
+            CustomerUpdateScreen(
+                onUpdateSuccess = { customerName ->
+                    navController.navigate(Screen.Home(customerName)) {
+                        popUpTo<Screen.CustomerRole> {
+                            inclusive = true
+                        }
+                    }
+                },
+            )
+        }
+        composable<Screen.Home> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.Home>()
+            HomeScreen(name = args.name)
         }
     }
 }
